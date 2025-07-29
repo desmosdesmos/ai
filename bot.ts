@@ -7,6 +7,12 @@ const bot = new Bot("8212092084:AAFArafCif5HOkXjO95ig4O8mLA2BNvEvfA");
 // Добавляем обработчик ошибок
 bot.catch((err) => {
   console.error("Ошибка в боте:", err);
+  
+  // Если это ошибка конфликта, просто логируем её
+  if (err.error_code === 409) {
+    console.log("Обнаружен конфликт с другим экземпляром бота. Перезапуск...");
+    // Можно добавить логику перезапуска
+  }
 });
 
 bot.command("start", (ctx) =>
@@ -33,13 +39,27 @@ bot.command("post", async (ctx) => {
   }
 });
 
-// Инициализация и запуск
+// Инициализация и запуск с обработкой ошибок
 (async () => {
   try {
     await initDB();
     console.log("База данных инициализирована");
-    bot.start();
-    console.log("Бот запущен");
+    
+    // Добавляем обработку ошибок при запуске
+    bot.start({
+      onStart: () => {
+        console.log("Бот успешно запущен");
+      },
+      onError: (err) => {
+        console.error("Ошибка при запуске бота:", err);
+        if (err.error_code === 409) {
+          console.log("Попытка перезапуска через 5 секунд...");
+          setTimeout(() => {
+            bot.start();
+          }, 5000);
+        }
+      }
+    });
   } catch (error) {
     console.error("Ошибка запуска:", error);
   }
