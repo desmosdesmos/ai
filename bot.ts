@@ -18,7 +18,7 @@ bot.command("post", async (ctx) => {
   if (!userId || !text) return ctx.reply("Напиши тему: /post Твоя тема");
 
   const can = await canGenerate(userId);
-  if (!can) return ctx.reply("Ограничение 3 поста в день. Купи доступ ��");
+  if (!can) return ctx.reply("Ограничение 3 поста в день. Купи доступ");
 
   ctx.reply("Генерирую пост...");
 
