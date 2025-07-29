@@ -1,0 +1,21 @@
+{
+  "name": "ai-content-bot",
+  "version": "1.0.0",
+  "description": "AI Content Bot for Telegram using OpenAI and SQLite, deployable on Railway.",
+  "main": "bot.ts",
+  "type": "module",
+  "scripts": {
+    "start": "npx ts-node bot.ts"
+  },
+  "dependencies": {
+    "grammy": "^1.19.2",
+    "openai": "^4.20.0",
+    "dotenv": "^16.4.5",
+    "sqlite3": "^5.1.6",
+    "sqlite": "^4.2.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+} 
