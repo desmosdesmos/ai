@@ -2,7 +2,7 @@ import { OpenAI } from "openai";
 import { POST_PROMPT } from "./prompts/postPrompt.js";
 
 const openai = new OpenAI({ 
-  apiKey: "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"
+  apiKey: "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"
 });
 
 export async function getPostFromTopic(topic: string): Promise<string> {
