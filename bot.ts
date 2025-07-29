@@ -4,6 +4,11 @@ import { initDB, canGenerate, increaseCount } from "./db.js";
 
 const bot = new Bot("8212092084:AAFArafCif5HOkXjO95ig4O8mLA2BNvEvfA");
 
+// Добавляем обработчик ошибок
+bot.catch((err) => {
+  console.error("Ошибка в боте:", err);
+});
+
 bot.command("start", (ctx) =>
   ctx.reply("Привет! Я — AI-контент-бот. Напиши /post и тему, я сгенерирую пост.")
 );
