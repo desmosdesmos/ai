@@ -1,7 +1,6 @@
 {
   "name": "ai-content-bot",
   "version": "1.0.0",
-  "description": "AI Content Bot for Telegram using OpenAI and SQLite, deployable on Railway.",
   "main": "bot.js",
   "type": "module",
   "scripts": {
