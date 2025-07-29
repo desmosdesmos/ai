@@ -1,12 +1,21 @@
-import { Bot, webhookCallback } from "grammy";
+import { Bot } from "grammy";
 import { getPostFromTopic } from "./openai.js";
 import { initDB, canGenerate, increaseCount } from "./db.js";
-import express from "express";
 
 const bot = new Bot("8212092084:AAFArafCif5HOkXjO95ig4O8mLA2BNvEvfA");
-const app = express();
 
-app.use(express.json());
+// Обработчик сигналов для graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('Получен SIGTERM, останавливаю бота...');
+  await bot.stop();
+  process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+  console.log('Получен SIGINT, останавливаю бота...');
+  await bot.stop();
+  process.exit(0);
+});
 
 bot.command("start", (ctx) =>
   ctx.reply("Привет! Я — AI-контент-бот. Напиши /post и тему, я сгенерирую пост.")
@@ -24,19 +33,12 @@ bot.command("post", async (ctx) => {
 
   try {
     const post = await getPostFromTopic(text);
+    console.log("Сгенерирован пост:", post.substring(0, 100) + "...");
     await ctx.reply(post);
   } catch (error) {
     console.error("Ошибка в команде post:", error);
     await ctx.reply("Произошла ошибка при генерации поста. Попробуй еще раз.");
   }
-});
-
-// Webhook endpoint
-app.post("/", webhookCallback(bot, "express"));
-
-// Health check endpoint
-app.get("/", (req, res) => {
-  res.send("Bot is running!");
 });
 
 // Инициализация
@@ -45,11 +47,16 @@ app.get("/", (req, res) => {
     await initDB();
     console.log("База данных инициализирована");
     
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-      console.log(`Сервер запущен на порту ${port}`);
+    bot.start({
+      onStart: () => {
+        console.log("Бот успешно запущен и готов к работе!");
+      },
+      onError: (err) => {
+        console.error("Ошибка в боте:", err);
+      }
     });
   } catch (error) {
     console.error("Ошибка запуска:", error);
+    process.exit(1);
   }
 })();
