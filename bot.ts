@@ -4,7 +4,7 @@ import { getPostFromTopic } from "./openai.js";
 import { initDB, canGenerate, increaseCount } from "./db.js";
 
 config();
-const bot = new Bot(process.env.BOT_TOKEN!);
+const bot = new Bot("8212092084:AAFArafCif5HOkXjO95ig4O8mLA2BNvEvfA");
 await initDB();
 
 bot.command("start", (ctx) =>
