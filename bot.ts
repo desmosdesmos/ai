@@ -12,15 +12,19 @@ bot.command("post", async (ctx) => {
   const userId = ctx.from?.id;
   const text = ctx.message?.text?.split(" ").slice(1).join(" ");
 
-  if (!userId || !text) return ctx.reply("Напиши тему: /post Твоя тема");
+  if (!userId || !text) {
+    return ctx.reply("Напиши тему: /post Твоя тема");
+  }
 
   ctx.reply("Генерирую пост...");
 
   try {
     const post = await getPostFromTopic(text);
-    ctx.reply(post);
+    console.log("Отправляю пост пользователю:", post);
+    await ctx.reply(post);
   } catch (error) {
-    ctx.reply("Ошибка генерации поста.");
+    console.error("Ошибка в команде post:", error);
+    await ctx.reply("Произошла ошибка при генерации поста. Попробуй еще раз.");
   }
 });
 
@@ -28,7 +32,9 @@ bot.command("post", async (ctx) => {
 (async () => {
   try {
     await initDB();
+    console.log("База данных инициализирована");
     bot.start();
+    console.log("Бот запущен");
   } catch (error) {
     console.error("Ошибка запуска:", error);
   }
