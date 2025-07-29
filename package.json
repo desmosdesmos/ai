@@ -4,10 +4,9 @@
   "description": "AI Content Bot for Telegram using OpenAI and SQLite, deployable on Railway.",
   "main": "dist/bot.js",
   "type": "module",
-  ""scripts": {
-  "build": "tsc",
-  "start": "npm run build && node dist/bot.js"
-}
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/bot.js"
   },
   "dependencies": {
     "grammy": "^1.19.2",
