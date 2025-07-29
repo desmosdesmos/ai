@@ -1,13 +1,13 @@
-   {
-     "compilerOptions": {
-       "target": "ES2020",
-       "module": "ESNext",
-       "outDir": "./",
-       "moduleResolution": "node",
-       "esModuleInterop": true,
-       "forceConsistentCasingInFileNames": true,
-       "strict": true,
-       "skipLibCheck": true
-     },
-     "include": ["*.ts", "prompts/*.ts"]
-   }
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["*.ts", "prompts/*.ts"]
+}
