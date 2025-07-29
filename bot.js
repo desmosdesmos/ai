@@ -2,8 +2,9 @@ import { Bot } from "grammy";
 import { OpenAI } from "openai";
 
 const bot = new Bot("8212092084:AAFArafCif5HOkXjO95ig4O8mLA2BNvEvfA");
+
 const openai = new OpenAI({ 
-  apiKey: "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"
+  apiKey: "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"
 });
 
 async function getPostFromTopic(topic) {
@@ -25,6 +26,11 @@ async function getPostFromTopic(topic) {
   }
 }
 
+// Добавляем обработчик ошибок
+bot.catch((err) => {
+  console.error("Ошибка в боте:", err);
+});
+
 bot.command("start", (ctx) =>
   ctx.reply("Привет! Я — AI-контент-бот. Напиши /post и тему, я сгенерирую пост.")
 );
@@ -40,6 +46,7 @@ bot.command("post", async (ctx) => {
 
   try {
     const post = await getPostFromTopic(text);
+    console.log("Сгенерирован пост:", post.substring(0, 100) + "...");
     await ctx.reply(post);
   } catch (error) {
     console.error("Ошибка:", error);
