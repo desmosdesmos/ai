@@ -1,5 +1,5 @@
 import { OpenAI } from "openai";
-import { POST_PROMPT } from "./prompts/postPrompt.js";
+import { POST_PROMPT } from "./prompts/postPrompt";
 import "dotenv/config";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
