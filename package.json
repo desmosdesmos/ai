@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "AI Content Bot for Telegram using OpenAI and SQLite, deployable on Railway.",
   "main": "dist/bot.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/bot.js"
