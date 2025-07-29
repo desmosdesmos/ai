@@ -5,10 +5,8 @@
     "outDir": "./dist",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": false,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "strict": false
   },
-  "include": ["*.ts", "prompts/*.ts"]
+  "include": ["*.ts"]
 }
