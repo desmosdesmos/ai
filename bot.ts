@@ -1,7 +1,7 @@
 import { Bot } from "grammy";
 import { config } from "dotenv";
-import { getPostFromTopic } from "./openai";
-import { initDB, canGenerate, increaseCount } from "./db";
+import { getPostFromTopic } from "./openai.js";
+import { initDB, canGenerate, increaseCount } from "./db.js";
 
 config();
 const bot = new Bot(process.env.BOT_TOKEN!);
