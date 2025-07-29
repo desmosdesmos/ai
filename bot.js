@@ -4,7 +4,9 @@ import { OpenAI } from "openai";
 const bot = new Bot("8212092084:AAFArafCif5HOkXjO95ig4O8mLA2BNvEvfA");
 
 const openai = new OpenAI({ 
-  apiKey: "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"
+  apiKey: "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",
+  organization: "org-1HgGZgmwPtioi3zjpPkiCByL",
+  project: "proj_1Rf0LK0SFoJNpz21t0YoLgo5"
 });
 
 async function getPostFromTopic(topic) {
