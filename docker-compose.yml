@@ -1,0 +1,48 @@
+version: '3.9'
+services:
+  api:
+    build:
+      context: /workspace
+      dockerfile: backend/Dockerfile
+    environment:
+      - DATABASE_URL=sqlite:////workspace/data/ukrf_checker.db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - INPUTS_DIR=/workspace/data/inputs
+      - OUTPUTS_DIR=/workspace/data/outputs
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/workspace/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  worker:
+    build:
+      context: /workspace
+      dockerfile: backend/worker.Dockerfile
+    environment:
+      - DATABASE_URL=sqlite:////workspace/data/ukrf_checker.db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - INPUTS_DIR=/workspace/data/inputs
+      - OUTPUTS_DIR=/workspace/data/outputs
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/workspace/data
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+

@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>УК РФ Excel Checker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body{font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; margin:40px}
+    .card{border:1px solid #ddd; border-radius:8px; padding:16px; max-width:800px}
+    .row{display:flex; gap:24px}
+    table{border-collapse:collapse; width:100%}
+    th,td{border:1px solid #eee; padding:8px; text-align:left}
+    th{background:#fafafa}
+  </style>
+  <script>
+    async function uploadFile(ev){
+      ev.preventDefault();
+      const file = document.getElementById('file').files[0];
+      if(!file) return;
+      const form = new FormData();
+      form.append('file', file);
+      const res = await fetch('/upload', { method:'POST', body: form });
+      const data = await res.json();
+      document.getElementById('job').textContent = data.job_id;
+      pollStatus(data.job_id);
+    }
+    async function pollStatus(jobId){
+      const el = document.getElementById('status');
+      const dlel = document.getElementById('download');
+      const timer = setInterval(async ()=>{
+        const res = await fetch(`/status/${jobId}`);
+        const data = await res.json();
+        el.textContent = data.status;
+        if(data.output_url){
+          dlel.innerHTML = `<a href="${data.output_url}">Скачать отчет</a>`;
+          clearInterval(timer);
+        }
+        if(data.error){
+          dlel.textContent = data.error;
+          clearInterval(timer);
+        }
+      }, 1500);
+    }
+  </script>
+  </head>
+<body>
+  <h1>УК РФ Excel Checker</h1>
+  <div class="card">
+    <form onsubmit="uploadFile(event)">
+      <input id="file" type="file" accept=".xlsx,.xls" />
+      <button type="submit">Загрузить</button>
+    </form>
+    <p>Job: <span id="job"></span></p>
+    <p>Status: <span id="status"></span></p>
+    <p id="download"></p>
+  </div>
+  <h2>Правила</h2>
+  <div id="rules"></div>
+  <script>
+    (async ()=>{
+      const res = await fetch('/rules');
+      const items = await res.json();
+      const rows = items.map(r=>`<tr><td>${r.article}</td><td>${r.part||''}</td><td>${r.point||''}</td><td>${r.rekvizit}</td><td>${r.min??''}</td><td>${r.max??''}</td><td>${r.status}</td></tr>`).join('');
+      document.getElementById('rules').innerHTML = `<table><tr><th>Статья</th><th>Часть</th><th>Пункт</th><th>Реквизит</th><th>Мин</th><th>Макс</th><th>Статус</th></tr>${rows}</table>`;
+    })();
+  </script>
+</body>
+</html>
+
