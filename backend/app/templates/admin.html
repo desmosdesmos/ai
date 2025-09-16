@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Admin: Правила УК РФ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body{font-family: system-ui; margin:32px}
+    table{border-collapse:collapse; width:100%}
+    th,td{border:1px solid #ddd; padding:8px}
+    th{background:#fafafa}
+    button{padding:6px 10px}
+  </style>
+  <script>
+    async function refresh(){
+      const res = await fetch('/rules');
+      const rules = await res.json();
+      const rows = rules.map(r=>`<tr>
+        <td>${r.id}</td>
+        <td>${r.article}</td>
+        <td>${r.part||''}</td>
+        <td>${r.point||''}</td>
+        <td>${r.rekvizit}</td>
+        <td>${r.min??''}</td>
+        <td>${r.max??''}</td>
+        <td>${r.confidence??''}</td>
+        <td>${r.status}</td>
+        <td>
+          <button onclick="approve(${r.id})">Approve</button>
+          <button onclick="reject(${r.id})">Reject</button>
+        </td>
+      </tr>`).join('');
+      document.getElementById('rules').innerHTML = `<table>
+        <tr><th>ID</th><th>Статья</th><th>Часть</th><th>Пункт</th><th>Реквизит</th><th>Мин</th><th>Макс</th><th>Conf</th><th>Статус</th><th>Действия</th></tr>
+        ${rows}</table>`;
+    }
+    async function approve(id){
+      await fetch(`/admin/rules/${id}/approve`, {method:'POST'});
+      refresh();
+    }
+    async function reject(id){
+      await fetch(`/admin/rules/${id}/reject`, {method:'POST'});
+      refresh();
+    }
+    window.onload = refresh;
+  </script>
+</head>
+<body>
+  <h1>Admin: Правила УК РФ</h1>
+  <div id="rules"></div>
+</body>
+</html>
+
